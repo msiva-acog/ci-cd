@@ -25,15 +25,15 @@ jobs:
     - name: build docker image
       run: docker build -t msivaacog/ci-cd-node .
     - name: publish image to docker hub
-      run: docker push msivaacog/ci-cd-node:tagname
+      run: docker push msivaacog/ci-cd-node:latest
   deploy:
     needs: build
     runs-on: [own3]
 
     steps:
     - name: pull docker image
-      run: docker pull msivaacog/ci-cd-node:tagname
+      run: docker pull msivaacog/ci-cd-node:latest
     - name: delete old container
       run: docker rm -f node-app-container
     - name: run docker container
-      run: docker run -d -p 5000:5000 --name node-app-container  msivaacog/ci-cd-node:tagname
+      run: docker run -d -p 5000:5000 --name node-app-container  msivaacog/ci-cd-node:latest
