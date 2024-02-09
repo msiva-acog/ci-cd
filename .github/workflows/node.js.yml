@@ -36,4 +36,4 @@ jobs:
     - name: delete old container
       run: docker rm -f node-app-container
     - name: run docker container
-      run: docker run -d -p 5000:5000 --name node-app-container  msivaacog/ci-cd-node:latest
+      run: docker run -d -p 3300:5000 --name node-app-container  msivaacog/ci-cd-node:latest
