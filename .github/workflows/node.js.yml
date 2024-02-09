@@ -28,7 +28,7 @@ jobs:
       run: docker push ci-cd/node:latest
   deploy:
     needs: build
-    runs_on: [own3]
+    runs-on: [own3]
 
     steps:
     - name: pull docker image
