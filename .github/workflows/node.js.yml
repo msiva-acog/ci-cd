@@ -28,7 +28,7 @@ jobs:
       run: docker push msivaacog/ci-cd-node:latest
   deploy:
     needs: build
-    runs-on: [own3]
+    runs-on: self-hosted
 
     steps:
     - name: pull docker image
