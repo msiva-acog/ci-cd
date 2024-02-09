@@ -14,16 +14,26 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.x, 16.x, 18.x]
+        node-version: [18.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
+    - name: checkout source
     - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
+    - name: login to docker hub
+    - uses: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PWD }}
+    - name: build docker image
+    - uses: docker build -t ci-cd/node .
+    - name: publish image to docker hub
+    - uses: docker push ci-cd/node:latest
+  deploy:
+    needs: build
+    runs_on: [own3]
+
+    steps:
+    - name: pull docker image
+    - uses: docker pull ci-cd/node:latest
+    - name: delete old container
+    - uses: docker rm -f node-app-container
+    - name: run docker container
+    - uses: docker run -d -p 5000:5000 --name node-app-container  ci-cd/node:latest
