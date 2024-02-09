@@ -1,13 +1,11 @@
-const express = require("express");
+const express = require('express')
 const app = express();
 
-
 app.get("/",(req,res)=>{
-    res.send("helloo welocme to ci-cd")
+    res.send("hello welcome")
 })
 
 
-
-app.listen(5000,()=>{
-    console.log("app is up and running on port 5000");
+app.listen(3000,()=>{
+    console.log("up and running on port 3000");
 })
