@@ -21,19 +21,19 @@ jobs:
     - name: checkout source
     - uses: actions/checkout@v3
     - name: login to docker hub
-    - uses: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PWD }}
+    - run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PWD }}
     - name: build docker image
-    - uses: docker build -t ci-cd/node .
+    - run: docker build -t ci-cd/node .
     - name: publish image to docker hub
-    - uses: docker push ci-cd/node:latest
+    - run: docker push ci-cd/node:latest
   deploy:
     needs: build
     runs_on: [own3]
 
     steps:
     - name: pull docker image
-    - uses: docker pull ci-cd/node:latest
+    - run: docker pull ci-cd/node:latest
     - name: delete old container
-    - uses: docker rm -f node-app-container
+    - run: docker rm -f node-app-container
     - name: run docker container
-    - uses: docker run -d -p 5000:5000 --name node-app-container  ci-cd/node:latest
+    - run: docker run -d -p 5000:5000 --name node-app-container  ci-cd/node:latest
